@@ -618,7 +618,15 @@ void hsetCommand(client *c) {
         addReply(c, shared.ok);
     }
     signalModifiedKey(c,c->db,c->argv[1]);
-    notifyKeyspaceEvent(NOTIFY_HASH,"hset",c->argv[1],c->db->id);
+    // c->argv[1]->ptr.
+    // my changed
+    // char *dest = new char[strlen(a)+strlen(b)+1];
+    // strcpy(dest,a);
+    // strcat(dest,b)
+    robj * new= createStringObject(c->argv[1]->ptr, strlen(".")+strlen(c->argv[2]->ptr)+strlen(c->argv[2]->ptr));
+    strcat(new->ptr,".");
+    strcat(new->ptr,c->argv[2]->ptr);
+    notifyKeyspaceEvent(NOTIFY_HASH,"hset",new,c->db->id);
     server.dirty += (c->argc - 2)/2;
 }
 
@@ -626,6 +634,7 @@ void hincrbyCommand(client *c) {
     long long value, incr, oldvalue;
     robj *o;
     sds new;
+    
     unsigned char *vstr;
     unsigned int vlen;
 
