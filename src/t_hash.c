@@ -624,8 +624,8 @@ void hsetCommand(client *c) {
     // strcpy(dest,a);
     // strcat(dest,b)
     robj * new= createStringObject(c->argv[1]->ptr, strlen(".")+strlen(c->argv[2]->ptr)+strlen(c->argv[2]->ptr));
-    strcat(new->ptr,".");
-    strcat(new->ptr,c->argv[2]->ptr);
+    redis_strlcat(new->ptr,".",sizeof(new->ptr));
+    redis_strlcat(new->ptr,c->argv[2]->ptr,sizeof(new->ptr));
     notifyKeyspaceEvent(NOTIFY_HASH,"hset",new,c->db->id);
     server.dirty += (c->argc - 2)/2;
 }
