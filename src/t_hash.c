@@ -751,11 +751,6 @@ void hsetCommand(client *c)
         addReply(c, shared.ok);
     }
     signalModifiedKey(c, c->db, c->argv[1]);
-    // c->argv[1]->ptr.
-    // my changed
-    // char *dest = new char[strlen(a)+strlen(b)+1];
-    // strcpy(dest,a);
-    // strcat(dest,b)
     sds key = sdsnew(c->argv[1]->ptr);
     key = sdscat(key, ".");
     key = sdscat(key, c->argv[2]->ptr);
