@@ -757,6 +757,7 @@ void hsetCommand(client *c)
     // strcpy(dest,a);
     // strcat(dest,b)
     sds key = sdsnew(c->argv[1]->ptr);
+    key = sdscat(key, ".");
     key = sdscat(key, c->argv[2]->ptr);
     robj *new = createStringObject(key, sdslen(key));
     notifyKeyspaceEvent(NOTIFY_HASH, "hset", new, c->db->id);
